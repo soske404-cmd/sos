@@ -37,7 +37,7 @@ def generate_redeem_code(length=8):
     code = ''.join(random.choice(characters) for _ in range(length))
     return code
 
-@Client.on_message(filters.command("red"))
+@Client.on_message(filters.command("red") & ~filters.edited)
 async def generate_redeem(client, message):
     if str(message.from_user.id) != OWNER_ID:
         return await message.reply_text(
@@ -47,8 +47,15 @@ async def generate_redeem(client, message):
     
     try:
         amount = int(message.command[1])
+        credits = int(message.command[2]) if len(message.command) > 2 else 50
     except:
-        return await message.reply_text("Usage: /red <amount>", reply_to_message_id=message.id)
+        return await message.reply_text(
+            "<pre>Usage ❌</pre>\n"
+            "<b>Format:</b> <code>/red {amount} {credits}</code>\n"
+            "<b>Example:</b> <code>/red 5 100</code>\n"
+            "<b>~ Generates 5 codes of 100 credits each</b>",
+            reply_to_message_id=message.id
+        )
     
     redeems = load_redeems()
     codes = []
@@ -62,20 +69,26 @@ async def generate_redeem(client, message):
         redeems[redeem_code] = {
             "used": False,
             "used_by": None,
-            "used_at": None
+            "used_at": None,
+            "credits": credits
         }
         codes.append(redeem_code)
 
     save_redeems(redeems)
 
-    msg = "<pre>[✦] Redeem Generated ✅\n[ϟ] Amount : {}</pre>\n━━━━━━━━━━━━━\n".format(amount)
+    msg = f"<pre>[✦] Redeem Generated ✅</pre>\n"
+    msg += f"<b>[ϟ] Amount :</b> <code>{amount}</code>\n"
+    msg += f"<b>[ϟ] Credits :</b> <code>{credits}</code>\n"
+    msg += "━━━━━━━━━━━━━\n"
     for code in codes:
-        msg += f"<b>Code :</b> <code>{code}</code>\n<b>Value : 50 Credits</b>\n━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━\n"
-    msg += "<pre>Use /redeem Sos-XXXXXXXXXXXX to Redeem Code</pre>"
+        msg += f"<b>Code :</b> <code>{code}</code>\n"
+        msg += f"<b>Value :</b> <code>{credits} Credits</code>\n"
+        msg += "━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━\n"
+    msg += "<pre>Use /redeem Sos-XXXXXXXXXXXX to Redeem</pre>"
 
     await message.reply_text(msg, reply_to_message_id=message.id)
 
-@Client.on_message(filters.command("redeem"))
+@Client.on_message(filters.command("redeem") & ~filters.edited)
 async def redeem_code(client, message):
     users = load_users()
     redeems = load_redeems()
@@ -104,6 +117,9 @@ async def redeem_code(client, message):
     if user_id not in users:
         return await message.reply_text("❌ Please register first using /start or /register", reply_to_message_id=message.id)
 
+    # Get credits from the code (or use default 50)
+    code_credits = redeems[code].get("credits", REDEEM_CREDIT_BONUS)
+
     user = users[user_id]
     plan = user.get("plan", {})
     current_credits = plan.get("credits", 0)
@@ -111,9 +127,9 @@ async def redeem_code(client, message):
     if current_credits != "∞":
         try:
             current_credits = int(current_credits)
-            new_credits = current_credits + REDEEM_CREDIT_BONUS
+            new_credits = current_credits + code_credits
         except:
-            new_credits = REDEEM_CREDIT_BONUS
+            new_credits = code_credits
     else:
         new_credits = "∞"
 
@@ -131,7 +147,7 @@ async def redeem_code(client, message):
             "expires_at": expires_at
         })
         user["role"] = REDEEM_PLAN_NAME
-    elif current_plan in ["Plus", "Pro", "Elite", "VIP"]:
+    elif current_plan in ["Plus", "Pro", "Elite", "VIP", "ULTIMATE"]:
         # User already has a paid plan — just increase credits
         user["plan"]["credits"] = new_credits
         # Don't change anything else!
@@ -152,7 +168,7 @@ async def redeem_code(client, message):
 
     await message.reply_text(
         f"<b>Redeemed Successfully ✅</b>\n<pre>• Code : {code}\n• ID : {user_id}</pre>\n"
-        f"<code>50 Credits are added to your account</code>\n"
+        f"<code>{code_credits} Credits are added to your account</code>\n"
         f"<code>Antispam Reduced To 10s For One Day!</code>",
         reply_to_message_id=message.id
     )
