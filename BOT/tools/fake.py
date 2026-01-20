@@ -2,7 +2,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 import requests
 
-@Client.on_message(filters.command("fake"))
+@Client.on_message(filters.command("fake") & ~filters.edited)
 async def generate_fake_user(client, message: Message):
     args = message.text.split()
     country_code = args[1].lower() if len(args) > 1 else "us"

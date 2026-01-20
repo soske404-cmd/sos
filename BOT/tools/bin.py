@@ -2,7 +2,7 @@ from pyrogram import Client, filters
 from TOOLS.getbin import get_bin_details
 import re
 
-@Client.on_message(filters.command("bin"))
+@Client.on_message(filters.command("bin") & ~filters.edited)
 async def bin_lookup(client, message):
     if len(message.command) < 2:
         return await message.reply("Please provide a BIN or card number.", reply_to_message_id=message.id)
@@ -37,7 +37,7 @@ async def bin_lookup(client, message):
         disable_web_page_preview=True
     )
 
-@Client.on_message(filters.command("mbin"))
+@Client.on_message(filters.command("mbin") & ~filters.edited)
 async def mass_bin_lookup(client, message):
     if len(message.command) < 2:
         return await message.reply("Please provide one or more BINs or card numbers.", reply_to_message_id=message.id)

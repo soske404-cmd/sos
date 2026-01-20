@@ -153,7 +153,7 @@ def is_free_user(user_id):
     except:
         return True
 
-@Client.on_message(filters.command("str") | filters.regex(r"^\.str(\s|$)"))
+@Client.on_message((filters.command("str") | filters.regex(r"^\.str(\s|$)")) & ~filters.edited)
 async def handle_autostripe(client, message):
     try:
         allowed_groups = load_allowed_groups()

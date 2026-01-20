@@ -16,7 +16,7 @@ def clean_text(text):
         return "N/A"
     return html.unescape(text)
 
-@Client.on_message(filters.command("start"))
+@Client.on_message(filters.command("start") & ~filters.edited)
 async def start_command(client: Client, message: Message):
     animated_texts = ["〔", "〔S", "〔So", "〔Sos", "〔SosChk〕"]
 
@@ -174,7 +174,7 @@ async def register_callback(client, callback_query):
 
 
 # Handle the /register command
-@Client.on_message(filters.command("register"))
+@Client.on_message(filters.command("register") & ~filters.edited)
 async def register_command(client, message):
     users = load_users()
     user_id = str(message.from_user.id)
@@ -237,7 +237,7 @@ async def register_command(client, message):
         reply_markup=buttons
     )
 
-@Client.on_message(filters.command("cmds"))
+@Client.on_message(filters.command("cmds") & ~filters.edited)
 async def show_cmds(client, message):
     home_text = """<pre>JOIN BEFORE USING. ✔️</pre>
 <b>~ Main :</b> <b><a href="https://t.me/Sosmain">Join Now</a></b>
@@ -265,11 +265,11 @@ async def show_cmds(client, message):
     )
 
 
-@Client.on_callback_query(filters.regex("^(exit|home|gates|tools|auth|charge|shopify|auto|braintree|stripe)$"))
+@Client.on_callback_query(filters.regex("^(exit|close|home|gates|tools|auth|charge|shopify|auto|braintree|stripe)$"))
 async def handle_callbacks(client, callback_query):
     data = callback_query.data
 
-    if data == "exit":
+    if data in ["exit", "close"]:
         await callback_query.message.edit_text("<pre>Thanks For Using #Sos</pre>")
 
     elif data == "home":

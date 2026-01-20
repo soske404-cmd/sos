@@ -124,7 +124,7 @@ async def handle_gen(client, message: Message, extrap, amount, edit_msg_id=None,
     except Exception as e:
         await message.reply(f"❌ Error: <code>{str(e)}</code>", quote=True)
 
-@Client.on_message(filters.command(["gen", ".gen", "$gen"]))
+@Client.on_message(filters.command(["gen", ".gen", "$gen"]) & ~filters.edited)
 async def gen_command(client, message: Message):
     args = message.text.split()
     if len(args) < 2:

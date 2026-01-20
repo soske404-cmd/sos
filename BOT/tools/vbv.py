@@ -36,7 +36,7 @@ def check_vbv(bin_number: str) -> dict:
         return VBV_DATA[bin_6]
     return None
 
-@Client.on_message(filters.command("vbv"))
+@Client.on_message(filters.command("vbv") & ~filters.edited)
 async def vbv_lookup(client, message: Message):
     if len(message.command) < 2:
         return await message.reply(
@@ -84,7 +84,7 @@ async def vbv_lookup(client, message: Message):
     
     await message.reply(reply_text, reply_to_message_id=message.id)
 
-@Client.on_message(filters.command("mvbv"))
+@Client.on_message(filters.command("mvbv") & ~filters.edited)
 async def mass_vbv_lookup(client, message: Message):
     if len(message.command) < 2:
         return await message.reply(
@@ -138,7 +138,7 @@ async def mass_vbv_lookup(client, message: Message):
     
     await message.reply(reply_text, reply_to_message_id=message.id, disable_web_page_preview=True)
 
-@Client.on_message(filters.command("nonvbv"))
+@Client.on_message(filters.command("nonvbv") & ~filters.edited)
 async def get_nonvbv_bins(client, message: Message):
     """Get random non-VBV bins from the database"""
     try:

@@ -22,7 +22,7 @@ def load_owner_id():
     except:
         return None
 
-@Client.on_message(filters.command("info"))
+@Client.on_message(filters.command("info") & ~filters.edited)
 async def info_command(client, message: Message):
     """Show user info"""
     users = load_users()
@@ -80,7 +80,7 @@ async def info_command(client, message: Message):
     await message.reply(info_text, parse_mode=ParseMode.HTML)
 
 
-@Client.on_message(filters.command("me"))
+@Client.on_message(filters.command("me") & ~filters.edited)
 async def me_command(client, message: Message):
     """Show own info"""
     users = load_users()
@@ -125,7 +125,7 @@ async def me_command(client, message: Message):
     await message.reply(info_text, parse_mode=ParseMode.HTML)
 
 
-@Client.on_message(filters.command(["buy", "plans"]))
+@Client.on_message(filters.command("buy") & ~filters.edited)
 async def buy_command(client, message: Message):
     """Show available plans for purchase"""
     owner_id = load_owner_id()
@@ -173,8 +173,8 @@ async def buy_command(client, message: Message):
 """
     
     buttons = InlineKeyboardMarkup([
-        [InlineKeyboardButton("Contact Owner", url=f"tg://user?id={owner_id}")],
+        [InlineKeyboardButton("Contact Owner", url=f"https://t.me/{owner_id}" if owner_id else "https://t.me/")],
         [InlineKeyboardButton("Close", callback_data="exit")]
     ])
     
-    await message.reply(buy_text, reply_markup=buttons, parse_mode=ParseMode.HTML)
+    await message.reply(buy_text, reply_markup=buttons, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
