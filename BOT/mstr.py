@@ -143,7 +143,7 @@ def is_free_user(user_id):
     except:
         return True
 
-@Client.on_message(filters.command("mstr") | filters.regex(r"^\.mstr(\s|$)"))
+@Client.on_message(filters.command(["mstr", "mau"]) | filters.regex(r"^\.mstr(\s|$)"))
 async def mstr_handler(client, message):
     user_id = str(message.from_user.id)
     

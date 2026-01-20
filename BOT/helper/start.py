@@ -325,11 +325,11 @@ async def handle_callbacks(client, callback_query):
 ⟐ <b>Status</b>: <code>Active ✅</code> 
 ⟐ <b>Note</b> : <code>Only For Premium Users</code> 
 ═══════════════════
-⟐ <b>Name</b>: <code>AutoStripe Charge</code>
-⟐ <b>Command</b>: <code>/au cc|mes|ano|cvv</code>
+⟐ <b>Name</b>: <code>Stripe Auth</code>
+⟐ <b>Command</b>: <code>/str cc|mes|ano|cvv</code>
 ⟐ <b>Status</b>: <code>Active ✅</code>
 ━ ━ ━ ━ ━━━ ━ ━ ━ ━
-⟐ <b>Mass Cmd</b>: <code>/mau cc|mes|ano|cvv</code>
+⟐ <b>Mass Cmd</b>: <code>/mstr cc|mes|ano|cvv</code>
 ⟐ <b>Limit</b>: <code>As Per User's Plan</code>
 ⟐ <b>Status: Active ✅</b>
 """
@@ -392,13 +392,13 @@ async def handle_callbacks(client, callback_query):
         )
 
     elif data == "auto":
-        auto_text = """<pre>#AutoStripe 〔Charge〕</pre>
+        auto_text = """<pre>#Stripe Auth 〔Charge〕</pre>
 ━ ━ ━ ━ ━━━ ━ ━ ━ ━
 ⟐ <b>/addurl</b>: <code>Add Site in Bot Private</code>
-⟐ <b>/au</b>: <code>/au cc|mes|ano|cvv [Single Check]</code>
+⟐ <b>/str</b>: <code>/str cc|mes|ano|cvv [Single Check]</code>
 ⟐ <b>Status: Active ✅</b>
 ━ ━ ━ ━ ━━━ ━ ━ ━ ━
-⟐ <b>Mass Cmd</b>: <code>/mau cc|mes|ano|cvv</code>
+⟐ <b>Mass Cmd</b>: <code>/mstr cc|mes|ano|cvv</code>
 ⟐ <b>Limit</b>: <code>As Per User's Plan</code>
 ⟐ <b>Status: Active ✅</b>
 ━ ━ ━ ━ ━━━ ━ ━ ━ ━
@@ -453,4 +453,43 @@ async def handle_callbacks(client, callback_query):
         )
 
     elif data == "tools":
-        await callback_query.answer("Tools Coming Soon!", show_alert=True)
+        tools_text = """<pre>#Sos 〔TOOLS〕</pre>
+━ ━ ━ ━ ━━━ ━ ━ ━ ━
+<b>📇 BIN Tools:</b>
+⟐ <code>/bin 414720</code> - BIN Lookup
+⟐ <code>/mbin bins</code> - Mass BIN Lookup
+⟐ <code>/vbv 414720</code> - Check VBV Status
+⟐ <code>/mvbv bins</code> - Mass VBV Check
+⟐ <code>/nonvbv 5</code> - Get Non-VBV Bins
+━ ━ ━ ━ ━━━ ━ ━ ━ ━
+<b>💳 Generator:</b>
+⟐ <code>/gen 414720</code> - Generate 10 Cards
+⟐ <code>/gen 414720 50</code> - Generate 50 Cards
+━ ━ ━ ━ ━━━ ━ ━ ━ ━
+<b>🧾 Fake Info:</b>
+⟐ <code>/fake us</code> - Fake US Identity
+⟐ <code>/fake uk</code> - Fake UK Identity
+━ ━ ━ ━ ━━━ ━ ━ ━ ━
+<b>🔗 Proxy Tools:</b>
+⟐ <code>/rproxy 3</code> - Get Random Proxies
+⟐ <code>/tproxy</code> - Test Random Proxy
+⟐ <code>/proxyinfo</code> - Proxy Pool Info
+⟐ <code>/setpx proxy</code> - Set Your Proxy
+⟐ <code>/getpx</code> - Get Your Proxy
+⟐ <code>/delpx</code> - Delete Your Proxy
+━ ━ ━ ━ ━━━ ━ ━ ━ ━
+<b>📝 Other:</b>
+⟐ <code>/f</code> - Submit Feedback (Reply to Image)
+⟐ <code>/info</code> - Your Account Info
+⟐ <code>/redeem code</code> - Redeem Code
+"""
+        tools_buttons = InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton("Back", callback_data="home"),
+                InlineKeyboardButton("Close", callback_data="exit")
+            ]
+        ])
+        await callback_query.message.edit_text(
+            tools_text,
+            reply_markup=tools_buttons
+        )
