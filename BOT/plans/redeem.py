@@ -134,29 +134,9 @@ async def redeem_code(client, message):
         new_credits = "∞"
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    expires_at = (datetime.now() + timedelta(seconds=EXPIRY_SECONDS)).strftime("%Y-%m-%d %H:%M:%S")
 
-    current_plan = plan.get("plan", "Free")
-    if current_plan == "Free":
-        user["plan"].update({
-            "plan": REDEEM_PLAN_NAME,
-            "credits": new_credits,
-            "badge": REDEEM_BADGE,
-            "antispam": REDEEM_ANTISPAM,
-            "activated_at": now,
-            "expires_at": expires_at
-        })
-        user["role"] = REDEEM_PLAN_NAME
-    elif current_plan in ["Plus", "Pro", "Elite", "VIP", "ULTIMATE"]:
-        # User already has a paid plan — just increase credits
-        user["plan"]["credits"] = new_credits
-        # Don't change anything else!
-    else:
-        # Any unknown or future plan, just update credits and expire only if no custom plan logic exists
-        user["plan"]["credits"] = new_credits
-        user["plan"]["antispam"] = REDEEM_ANTISPAM
-        user["plan"]["expires_at"] = expires_at
-
+    # Just add credits - don't change plan
+    user["plan"]["credits"] = new_credits
     user["plan"]["keyredeem"] = user["plan"].get("keyredeem", 0) + 1
 
     redeems[code]["used"] = True
@@ -167,9 +147,11 @@ async def redeem_code(client, message):
     save_redeems(redeems)
 
     await message.reply_text(
-        f"<b>Redeemed Successfully ✅</b>\n<pre>• Code : {code}\n• ID : {user_id}</pre>\n"
-        f"<code>{code_credits} Credits are added to your account</code>\n"
-        f"<code>Antispam Reduced To 10s For One Day!</code>",
+        f"<b>Redeemed Successfully ✅</b>\n"
+        f"<pre>• Code : {code}\n• ID : {user_id}</pre>\n"
+        f"<b>~ {code_credits} Credits added to your account</b>\n"
+        f"<b>~ Use credits to check cards</b>\n"
+        f"<code>1 Credit = 1 Card Check</code>",
         reply_to_message_id=message.id
     )
 

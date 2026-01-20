@@ -133,6 +133,7 @@ async def buy_command(client, message: Message):
     
     buy_text = f"""<pre>Available Plans ~ Sos ✦</pre>
 ━━━━━━━━━━━━━━━
+<code>1 Credit = 1 Card Check</code>
 
 <b>plan1 - Plus 💠</b>
    • Price: <code>$1</code>
