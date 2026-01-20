@@ -1,10 +1,11 @@
 import json
 import os
 from pyrogram import Client, filters
-from pyrogram.types import Message
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.enums import ParseMode
 
 USERS_FILE = "DATA/users.json"
+CONFIG_FILE = "FILES/config.json"
 
 def load_users():
     try:
@@ -12,6 +13,14 @@ def load_users():
             return json.load(f)
     except:
         return {}
+
+def load_owner_id():
+    try:
+        with open(CONFIG_FILE, "r") as f:
+            config = json.load(f)
+        return config.get("OWNER")
+    except:
+        return None
 
 @Client.on_message(filters.command("info"))
 async def info_command(client, message: Message):
@@ -114,3 +123,58 @@ async def me_command(client, message: Message):
 ━━━━━━━━━━━━━━━"""
     
     await message.reply(info_text, parse_mode=ParseMode.HTML)
+
+
+@Client.on_message(filters.command(["buy", "plans"]))
+async def buy_command(client, message: Message):
+    """Show available plans for purchase"""
+    owner_id = load_owner_id()
+    owner_link = f"<a href='tg://user?id={owner_id}'>Owner</a>" if owner_id else "Owner"
+    
+    buy_text = f"""<pre>Available Plans ~ Sos ✦</pre>
+━━━━━━━━━━━━━━━
+
+<b>plan1 - Plus 💠</b>
+   • Price: <code>$1</code>
+   • Credits: <code>200</code>
+   • Antispam: <code>13s</code>
+   • Duration: <code>1 Day</code>
+
+<b>plan2 - Pro 🔰</b>
+   • Price: <code>$3</code>
+   • Credits: <code>500</code>
+   • Antispam: <code>7s</code>
+   • Mass Limit: <code>7</code>
+   • Duration: <code>7 Days</code>
+
+<b>plan3 - Elite 📧</b>
+   • Price: <code>$6</code>
+   • Credits: <code>1000</code>
+   • Antispam: <code>3s</code>
+   • Mass Limit: <code>10</code>
+   • Duration: <code>15 Days</code>
+
+<b>plan4 - VIP 🎖</b>
+   • Price: <code>$15</code>
+   • Credits: <code>2000</code>
+   • Antispam: <code>1s</code>
+   • Mass Limit: <code>15</code>
+   • Duration: <code>30 Days</code>
+
+<b>plan5 - Ultimate ⭐️</b>
+   • Price: <code>$25</code>
+   • Credits: <code>2500</code>
+   • Antispam: <code>1s</code>
+   • Mass Limit: <code>22</code>
+   • Duration: <code>30 Days</code>
+
+━━━━━━━━━━━━━━━
+<b>Buy plans from {owner_link}</b>
+"""
+    
+    buttons = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Contact Owner", url=f"tg://user?id={owner_id}")],
+        [InlineKeyboardButton("Close", callback_data="exit")]
+    ])
+    
+    await message.reply(buy_text, reply_markup=buttons, parse_mode=ParseMode.HTML)
