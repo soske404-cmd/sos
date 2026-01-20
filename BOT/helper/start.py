@@ -320,18 +320,21 @@ async def handle_callbacks(client, callback_query):
     elif data == "auth":
         auth_text = """<pre>#Sos 〔AUTH GATES〕</pre>
 ━ ━ ━ ━ ━━━ ━ ━ ━ ━
+⟐ <b>Name</b>: <code>Stripe Auth [NEW API]</code>
+⟐ <b>Command</b>: <code>/au cc|mes|ano|cvv</code>
+⟐ <b>Mass Cmd</b>: <code>/mau cc|mes|ano|cvv</code>
+⟐ <b>Status</b>: <code>Active ✅</code>
+⟐ <b>Note</b>: <code>Real Stripe Checking</code>
+═══════════════════
+⟐ <b>Name</b>: <code>AutoStripe [Site Based]</code>
+⟐ <b>Command</b>: <code>/str cc|mes|ano|cvv</code>
+⟐ <b>Mass Cmd</b>: <code>/mstr cc|mes|ano|cvv</code>
+⟐ <b>Status</b>: <code>Active ✅</code>
+⟐ <b>Note</b>: <code>Requires /addurl first</code>
+━ ━ ━ ━ ━━━ ━ ━ ━ ━
 ⟐ <b>Name</b>: <code>Braintree Auth HQ</code>
 ⟐ <b>Command</b>: <code>$b3 cc|mes|ano|cvv</code>
-⟐ <b>Status</b>: <code>Active ✅</code> 
-⟐ <b>Note</b> : <code>Only For Premium Users</code> 
-═══════════════════
-⟐ <b>Name</b>: <code>Stripe Auth</code>
-⟐ <b>Command</b>: <code>/str cc|mes|ano|cvv</code>
 ⟐ <b>Status</b>: <code>Active ✅</code>
-━ ━ ━ ━ ━━━ ━ ━ ━ ━
-⟐ <b>Mass Cmd</b>: <code>/mstr cc|mes|ano|cvv</code>
-⟐ <b>Limit</b>: <code>As Per User's Plan</code>
-⟐ <b>Status: Active ✅</b>
 """
         auth_buttons = InlineKeyboardMarkup([
             [
@@ -392,18 +395,22 @@ async def handle_callbacks(client, callback_query):
         )
 
     elif data == "auto":
-        auto_text = """<pre>#Stripe Auth 〔Charge〕</pre>
+        auto_text = """<pre>#AutoStripe 〔Site Based〕</pre>
 ━ ━ ━ ━ ━━━ ━ ━ ━ ━
 ⟐ <b>/addurl</b>: <code>Add Site in Bot Private</code>
-⟐ <b>/str</b>: <code>/str cc|mes|ano|cvv [Single Check]</code>
-⟐ <b>Status: Active ✅</b>
-━ ━ ━ ━ ━━━ ━ ━ ━ ━
-⟐ <b>Mass Cmd</b>: <code>/mstr cc|mes|ano|cvv</code>
-⟐ <b>Limit</b>: <code>As Per User's Plan</code>
+⟐ <b>/str</b>: <code>/str cc|mes|ano|cvv [Single]</code>
+⟐ <b>/mstr</b>: <code>/mstr cc|mes|ano|cvv [Mass]</code>
 ⟐ <b>Status: Active ✅</b>
 ━ ━ ━ ━ ━━━ ━ ━ ━ ━
 ⟐ <b>/mysite</b>: <code>View your current site</code>
 ⟐ <b>/delsite</b>: <code>Remove your site</code>
+
+<pre>#Stripe Auth 〔New API〕</pre>
+━ ━ ━ ━ ━━━ ━ ━ ━ ━
+⟐ <b>/au</b>: <code>/au cc|mes|ano|cvv [Single]</code>
+⟐ <b>/mau</b>: <code>/mau cc|mes|ano|cvv [Mass]</code>
+⟐ <b>Status: Active ✅</b>
+⟐ <b>Note</b>: <code>No site needed, real API</code>
 """
         auto_buttons = InlineKeyboardMarkup([
             [
