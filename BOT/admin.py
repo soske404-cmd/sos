@@ -344,21 +344,6 @@ async def add_credits(client: Client, message: Message):
     )
 
 
-@Client.on_message(filters.command("plans"))
-async def show_plans(client: Client, message: Message):
-    """Show all available plans"""
-    text = "<pre>Available Plans ~ Sos ✦</pre>\n━━━━━━━━━━━━━━━\n\n"
-    
-    for plan_cmd, config in PLANS.items():
-        text += f"<b>/{plan_cmd}</b> - {config['plan']} {config['badge']}\n"
-        text += f"   • Credits: <code>{config['credits']}</code>\n"
-        text += f"   • Antispam: <code>{config['antispam']}s</code>\n"
-        text += f"   • Mass Limit: <code>{config['mlimit']}</code>\n\n"
-    
-    text += "━━━━━━━━━━━━━━━\n"
-    text += "<b>Usage:</b> <code>/plan1 @user</code> or <code>/plan1 userid</code>"
-    
-    await message.reply(text, parse_mode=ParseMode.HTML)
 
 
 def load_redeem_codes():
